@@ -1,5 +1,5 @@
 const functions = require('firebase-functions');
-
+const cors = require('cors')({origin: true});
 const express = require('express');
 const app = express();
 const FBAuth = require('./utils/fbAuth');
@@ -20,7 +20,7 @@ const {
   addUserDetails,
   getMe
 } = require('./handlers/user');
-
+app.use(cors);
 // scream route
 app.get('/scream', getAllScream);
 app.post('/scream', FBAuth, postOneScream);
