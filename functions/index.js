@@ -13,6 +13,7 @@ const {
   unlikeScream,
   deleteScream
 } = require('./handlers/scream.js');
+const { crawLeagues, crawTeams, crawPlayers, getLeagues, getTeams, getPlayers } = require('./handlers/pes.js')
 const {
   signup,
   login,
@@ -36,7 +37,16 @@ app.post('/user', FBAuth, addUserDetails);
 app.get('/user', FBAuth, getMe);
 app.post('/user/image', FBAuth, uploadImage);
 
-exports.api = functions.https.onRequest(app);
+// crawed data
+app.get('/pes/crawLeagues', crawLeagues);
+app.get('/pes/crawTeams', crawTeams);
+app.get('/pes/crawPlayers', crawPlayers);
+app.get('/pes/getLeagues', getLeagues);
+app.get('/pes/getTeams', getTeams);
+app.get('/pes/getPlayers', getPlayers);
+
+
+exports.api = functions.runWith({timeoutSeconds: 540, memory: '2GB'}).https.onRequest(app);
 
 exports.createNotificationOnLike = functions.firestore.document('likes/{id}')
   .onCreate((snapshot) => {
